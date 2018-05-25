@@ -1,0 +1,28 @@
+GCZCSE (Globular Cluster Metallicity Clumpy Self-Enrichment)
+by Jeremy Bailin (jbailin@ua.edu)
+Described in Bailin (2018, ApJ, submitted)
+
+(written in Python2.7)
+
+Usage: python plotter.py [configfile]
+
+configfile is an optional YAML-formatted configuration file. See defaultconfig.cfg
+to see what it should look like. Parameters are described in param-description.txt.
+
+plotter.py has a number of flags at the beginning that you might want to change.
+Storing the objects turns off parallelization, so if you don't need them (for example,
+for plotting MDFs), set obj_flag to False.
+
+If you are generating MDFs and/or want to highlight certain model points on the plots,
+object_indices is a set of indices into the logmass array of GMC masses. You can also
+change logmass if you want a different set of GMC masses (for example, for testing)...
+note that it tends to get very slow above a few 1e7 solar masses.
+
+Aside from the plots, the code will generate a ..._clusters.dat file with the cluster
+data. The output/fiducial_clusters.dat is the data from the fiducial run in the paper.
+
+
+Support for program HST-AR-13908.001-A was provided by NASA through a grant from the
+Space Telescope Science Institute, which is operated by the Association for Research
+in Astronomy, Inc., under NASA contract NAS 5-26555.
+

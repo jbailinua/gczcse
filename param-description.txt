@@ -1,0 +1,85 @@
+Description of parameters:
+
+Output:
+output:		Filename stub for outputs.
+
+Gas cloud pre-enrichment.
+pre_enrich_level:	Metal pre-enrichment level, in log Z/Z_sun
+
+For clumping, the number of clumps scales with GMC mass as N_clump = N_clumpref (M_GMC/M_GMCref)^s
+s:		scaling exponent for number of clumps. s=0 means N_clump is constant, s=1 means M_clump is constant.
+Nclumpref:	number of clumps when M_GMC == M_GMCref
+MGMCref:	reference cloud mass for clump normalization
+Nclump_poisson:	true if Nclump should be drawn from a Poisson distribution with the appropriate
+		mean, false if it should be exactly the number given by the formula
+clumpy_massfrac:	Fraction of the initial cloud mass that fragments into clumps (i.e.
+			f_DG in Lada et al. 2012). The rest
+			is diffuse gas. Note that this cannot be less than fstar, which is the total
+			fraction of the GMC mass that turns into stars!
+
+The distribution of clump masses is given by a lognormal distribution.
+Mclump_dispersion:	width of the underlying normal distribution of the natural log of the clump mass.
+			For Mclump_dispersion << 1, this is equal to the fractional dispersion.
+
+The distribution of formation times of clumps within a cloud is a normal distribution.
+tform_dispersion:	width of the distribution of formation times of clumps within a cloud, in years.
+
+
+Stellar lifetimes as a function of mass can be from a simple analytic scaling, or from stellar evolution models.
+stellar_lifetimes:	'analytic' = 1e10 M^(-2.5)
+			'mist' = interpolation of MIST lifetimes from Choi et al. (2016) data
+			'polyfit' = 3rd-degree polynomial fit to MIST lifetimes, accurate to 12% above 0.6 Msun
+				(age < 40 Gyr)
+
+
+
+IMF parameters for truncated Salpeter
+imf_type:		'salpeter': truncated Salpeter
+imf_salpeter_mmin:	minimum mass of truncated Salpeter
+imf_salpeter_mmax:	maximum mass of truncated Salpeter
+imf_salpeter_slope:	slope of truncated Salpeter in dN/dM (should be -2.35)
+
+ESN:			Energy per supernova in ergs
+
+fstar:			Star formation efficiency (fraction of gas turned into stars)
+
+cross_enrichment:	true/false
+
+What determines the clump radius and how does it scale?
+clumprad_type:		'cloud_fraction'=a constant fraction of the cloud radius
+				Uses the clumprad_fraction parameter
+			'constant_density'=scale with clump mass so density is constant
+				Uses the clumprad_density parameter
+			'constant_surface_density'=scale with clump mass so surface density is constant
+				(a la Larson's relation).
+				Uses the clumprad_surface_density parameter
+The parameters are
+clumprad_density:	density of each clump, in solar masses per cubic parsec
+clumprad_fraction:	each clump's radius is clumprad_fraction times the radius of the parent cloud
+clumprad_surface_density:	surface density of each clump, in solar masses per square pc
+
+
+The degree to which supernova ejecta is mixes with the surrounding intraclump/
+intracloud medium and entrains it in any flows out the clump/cloud.
+mixing_efficiency:      Interpolates between the ejected mass being entirely from SN
+						ejecta (for 0) to being a fully mixed representative of the
+						cluster (for 1).
+
+
+Enrichment and energy feedback mechanisms are specified with a sublist.
+enrichment_mechanisms:		List of processes that eject metals.
+feedback_mechanisms:		List of processes that eject energy.
+			Possible mechanisms:
+				'CCSN' or 'supernovae': core collapse supernovae.
+
+Core collapse supernova yields.
+ccsn_yield: 'bh09' = parametrization from Bailin & Harris (2009)
+            'nugrid' = BH09 below 15 Msun, interpolated yields for solar nuGrid
+                        models at 15 < M < 60, same yield fraction as 60 Msun model
+                        at higher masses.
+            'westheger' = BH09 below 13 Msun, interpolated yields for [Z/H]=-1.5
+                        Cote models at 13 < M < 30, zero yield at higher masses.
+            'nomoto13' = BH09 below 10 Msun, interpolated yields for [Z/H]=-1.2 
+            			Nomoto et al. (2013) models at 10 < M < 40, same yield fraction
+            			as 40 Msun model at higher masses.
+
